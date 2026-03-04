@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}IndicadoresMGA{% endblock title %}
+
+{% block content %}
+
+<div class="contenedor-metas">
+  <div>
+    <p>Prueba</p>
+  </div>
+  <div>
+    <p>Prueba</p>
+  </div>
+  <div class="contenedor-tabla-metas">
+    <table class="tabla-metas">
+      <thead>
+      <tr>
+        <th>Sector MGA</th>
+        <th>Programa MGA</th>
+        <th>Producto MGA</th>
+        <th>Indicador MGA</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for indicador in indicadores %}
+      <tr>
+          <td>{{ indicador.producto_mga.programa_mga.sector_mga.codigo_sector_mga }}: 
+            {{ indicador.producto_mga.programa_mga.sector_mga.sector_mga }}
+          </td>
+          <td>{{ indicador.producto_mga.programa_mga.codigo_programa_mga }}: 
+            {{ indicador.producto_mga.programa_mga.programa_mga }}</td>
+          <td>{{ indicador.producto_mga.codigo_producto_mga }}: {{ indicador.producto_mga.producto_mga }}</td>
+          <td>{{ indicador.codigo_indicador_mga }}: {{ indicador.indicador_mga }}</td>
+          <td>
+            <div class="acciones">
+              <button class="btn-ver-proyectos" onclick="toggleProyectos({{indicador.id}})">Ver proyectos</button>
+              <a href="{% url 'agregar_proyecto' indicador.id %}" style="color: black; font-size: 12px;">Agregar Proyectos</a>
+            </div>
+          </td>
+      </tr>
+      <tr class="fila-proyectos" id="proyectos-{{ indicador.id }}">
+        <td colspan="5">
+          <table class="tabla-proyectos">
+            <thead>
+              <tr>
+                <th>BPIN</th>
+                <th>Nombre del Proyecto</th>
+                <th>Editar Proyecto</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for proyecto in indicador.proyectos_set.all %}
+              <tr>
+                <td>{{ proyecto.bpin }}</td>
+                <td>{{ proyecto.nombre_proyecto }}</td>
+                <th><a href="{% url 'editar_proyecto' proyecto.id %}">Editar</a></th>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">
+          <p>No hay contenido de metas</p>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <script>
+      function toggleProyectos(indicadorID) {
+        var fila = document.getElementById('proyectos-' + indicadorID);
+        if (fila) {
+          fila.classList.toggle('mostrar');
+        }
+      }
+    </script>
+  </div>
+
+</div>
+{% endblock content %}

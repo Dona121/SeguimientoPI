@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %} Proyectos {% endblock title %}
+
+<style>
+  .formulario{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+</style>
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+  <div class="formulario">  
+    {% for field in form %}
+    <div class="texto-formulario">{{ field.label_tag }}</div>
+    <div class="widget-formulario">{{ field }}</div>
+    <div class="errores-formulario">{{ field.errors }}</div>
+    <div class="texto-ayuda-formulario">{{ field.help_text }}</div>
+    {% empty %}
+    {% endfor %}
+    <button type="submit">Enviar datos</button>
+  </div>
+</form>
+
+
+{% endblock content %}
